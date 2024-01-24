@@ -7,6 +7,9 @@ import allure
 
 class MainPageOperations(BasePageOperations):
 
+    @allure.step('Открываем браузер Firefox, заходим на страницу Самокатов')
+    def open_main_page(self):
+        self.wait_for_visibility(MainPageLocators.SCOOTER_BLUEPRINT_IMAGE)
 
     @allure.step('Нажимаем на лого Яндекс')
     def ya_logo_click(self):
@@ -27,7 +30,7 @@ class MainPageOperations(BasePageOperations):
     @allure.step('Жмем лого ЯНдекс, переключаемся на вкладку, ждем пока загрузит лого')
     def logo_to_dzen(self):
         self.ya_logo_click()
-        self.driver.switch_to.window(self.driver.window_handles[1])
+        self.switch_to_window()
         self.wait_for_visibility(NavBar.DZEN_LOGO)
 
     @allure.step('Выполняем скролл до последнего вопроса')
@@ -41,3 +44,5 @@ class MainPageOperations(BasePageOperations):
         self.wait_for_click_available(MainPageLocators.ORDER_BUTTON_MP)
         self.click(MainPageLocators.ORDER_BUTTON_MP)
         self.wait_for_click_available(OrderPageLocators.ORDER_TEMPLATE)
+
+

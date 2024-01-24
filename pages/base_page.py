@@ -1,6 +1,5 @@
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions
-from locators.main_page_locators import MainPageLocators
 import allure
 
 
@@ -39,9 +38,14 @@ class BasePageOperations:
         current_url = current_url.partition('/?y')[0]
         return current_url
 
-    @allure.step('Открываем браузер Firefox, заходим на страницу Самокатов')
-    def open_main_page(self):
-        self.wait_for_visibility(MainPageLocators.SCOOTER_BLUEPRINT_IMAGE)
+    def text_extracting(self, text):
+        element_text = self.driver.find_element(*text).text
+        return element_text
+
 
     def send_data_to_locator(self, locator, info):
         self.driver.find_element(*locator).send_keys(info)
+
+    @allure.step('Переключиться на новую вкладку')
+    def switch_to_window(self):
+        self.driver.switch_to.window(self.driver.window_handles[1])

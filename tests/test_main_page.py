@@ -13,7 +13,7 @@ class TestMainPage:
     def test_bottom_order_button(self, driver):
         main_page = MainPageOperations(driver)
         base_page = BasePageOperations(driver)
-        base_page.open_main_page()
+        main_page.open_main_page()
         main_page.scroll_to_button()
         assert base_page.current_url(driver) == Constants.ORDER_URL
 
@@ -34,8 +34,7 @@ class TestMainPage:
     def test_faq_droprown_texts(self, driver, faq_q, faq_a, answers):
         base_page = BasePageOperations(driver)
         main_page = MainPageOperations(driver)
-        base_page.open_main_page()
+        main_page.open_main_page()
         main_page.scroll_to_bottom()
         base_page.click(faq_q)
-        element_text = driver.find_element(*faq_a).text
-        assert element_text == answers
+        assert base_page.text_extracting(faq_a) == answers

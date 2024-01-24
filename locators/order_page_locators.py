@@ -23,3 +23,4 @@ class OrderPageLocators:
  ORDER_BUTTON = (By.XPATH, ".//button[@class != 'Button_Button__ra12g' and text()='Заказать']") #кнопка Заказать
  CONFIRM_BUTTON = (By.XPATH, ".//button[text()='Да']") #кнопка Да
  SUCCESS_ORDER = (By.XPATH, ".//*[@class='Order_ModalHeader__3FDaJ' and text()='Заказ оформлен']") # Всплывашка об успешном заказе
+ CONFIRMATION_HEADER = (By.XPATH, "//div[@class='Order_ModalHeader__3FDaJ']")
