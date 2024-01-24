@@ -1,31 +1,43 @@
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions
 from locators.main_page_locators import MainPageLocators
 from locators.order_page_locators import OrderPageLocators
-import pytest
-
+from pages.base_page import BasePageOperations
+from locators.base_page_locators import NavBar
 import allure
-from faker import Faker
 
-class MainPageOperations:
-    @allure.step('Открываем браузер Firefox, заходим на страницу Самокатов')
-    def open_main_page(self, driver):
-        WebDriverWait(driver, 15).until(
-            expected_conditions.visibility_of_element_located(MainPageLocators.SCOOTER_BLUEPRINT_IMAGE))
+
+class MainPageOperations(BasePageOperations):
+
+
+    @allure.step('Нажимаем на лого Яндекс')
+    def ya_logo_click(self):
+        self.click(NavBar.YA_LOGO)
+
+    @allure.step('Нажимаем на лого Самокат')
+    def samokat_logo_click(self):
+        self.click(NavBar.SAMOKAT_LOGO)
+
+    @allure.step('Нажимаем на кнопку Заказать (верхнее статичное меню)')
+    def order_button_click(self):
+        self.click(NavBar.ORDER_BUTTON)
+
+    @allure.step('Нажимаем на кнопку Статус заказа')
+    def order_status_button_click(self):
+        self.click(NavBar.ORDER_STATUS_BUTTON)
+
+    @allure.step('Жмем лого ЯНдекс, переключаемся на вкладку, ждем пока загрузит лого')
+    def logo_to_dzen(self):
+        self.ya_logo_click()
+        self.driver.switch_to.window(self.driver.window_handles[1])
+        self.wait_for_visibility(NavBar.DZEN_LOGO)
 
     @allure.step('Выполняем скролл до последнего вопроса')
-    def scroll_to_bottom(self, driver):
-        element = driver.find_element(*MainPageLocators.FAQ_LAST_Q)
-        driver.execute_script("arguments[0].scrollIntoView();", element)
-        WebDriverWait(driver, 15).until(
-            expected_conditions.element_to_be_clickable(MainPageLocators.FAQ_LAST_Q))
+    def scroll_to_bottom(self):
+        self.scroll_to_element(MainPageLocators.FAQ_LAST_Q)
+        self.wait_for_visibility(MainPageLocators.FAQ_LAST_Q)
 
     @allure.step('Скроллим и нажимаем на кнопку Заказать на главной странице')
-    def scroll_to_button(self, driver):
-        element = driver.find_element(*MainPageLocators.ORDER_BUTTON_MP)
-        driver.execute_script("arguments[0].scrollIntoView();", element)
-        WebDriverWait(driver, 15).until(
-            expected_conditions.element_to_be_clickable(MainPageLocators.ORDER_BUTTON_MP))
-        driver.find_element(*MainPageLocators.ORDER_BUTTON_MP).click()
-        WebDriverWait(driver, 15).until(
-            expected_conditions.element_to_be_clickable(OrderPageLocators.ORDER_TEMPLATE))
+    def scroll_to_button(self):
+        self.scroll_to_element(MainPageLocators.ORDER_BUTTON_MP)
+        self.wait_for_click_available(MainPageLocators.ORDER_BUTTON_MP)
+        self.click(MainPageLocators.ORDER_BUTTON_MP)
+        self.wait_for_click_available(OrderPageLocators.ORDER_TEMPLATE)
